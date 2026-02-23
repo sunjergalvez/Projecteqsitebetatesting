@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Next Gen - AdVocally</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="page advocally-page">
+        <header class="top-nav">
+            <button class="avatar" aria-label="Profile">
+                <img src="Logo.png" alt="GEDSOC logo" class="avatar-logo">
+            </button>
+            <form class="search-pill search-form" role="search" aria-label="Search this site">
+                <input id="site-search" class="search-input" type="search" placeholder="Search this site" aria-label="Search this site">
+                <button class="search-submit" type="submit">Search</button>
+            </form>
+            <button class="join-btn" type="button">JOIN US!</button>
+            <div class="dots-menu">
+                <button class="dots" type="button" aria-label="Open menu" aria-haspopup="true" aria-expanded="false">•••</button>
+                <div class="dots-dropdown" hidden>
+                    <a class="report-problem-btn" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1" target="_blank" rel="noopener noreferrer">Report a problem</a>
+                    <div class="zoom-control">
+                        <button class="zoom-btn" id="zoomOut" aria-label="Zoom out">−</button>
+                        <span class="zoom-level" id="zoomLabel">100%</span>
+                        <button class="zoom-btn" id="zoomIn" aria-label="Zoom in">+</button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <section class="adv-hero">
+                <div class="profile-col">
+                    <div class="thumb-placeholder profile-thumb">[profile placeholder]</div>
+                    <input id="profile-upload" type="file" accept="image/*" hidden>
+                    <p class="username" contenteditable="true" role="textbox" aria-label="Edit username">username</p>
+                </div>
+
+                <div class="action-col">
+                    <button id="create-me-btn" type="button" class="adv-action-btn">Create New ME</button>
+                    <button id="add-story-btn" type="button" class="adv-action-btn">Add Story</button>
+                    <button id="post-btn" type="button" class="adv-action-btn">Post</button>
+                </div>
+
+                <div class="feature-col">
+                    <video class="feature-thumb" src="3.mp4" autoplay muted loop playsinline aria-label="Feature episode preview"></video>
+                    <h2 class="feature-title">NEW EPISODE OUT! &nbsp; EP 0: ROLE MODEL</h2>
+                </div>
+            </section>
+
+            <nav class="tabs" aria-label="Main tabs">
+                <button type="button" class="active">AdVocally</button>
+                <button type="button" class="tab-about">ABOUT US</button>
+                <button type="button">FraMEwork</button>
+            </nav>
+
+            <section class="episode-list" aria-label="Episodes">
+                <article class="episode-item">
+                    <video class="episode-thumb" src="1.mp4" autoplay muted loop playsinline aria-label="Episode 1 preview"></video>
+                    <div class="episode-copy">
+                        <h3>EP I: MARIE GABRILLE</h3>
+                        <p>Marie, a Computer Engineering student at FEU Tech shares her thoughts on bullying due to unrealistic standards of femininity.</p>
+                    </div>
+                </article>
+
+                <article class="episode-item">
+                    <video class="episode-thumb" src="2.mp4" autoplay muted loop playsinline aria-label="Episode 2 preview"></video>
+                    <div class="episode-copy">
+                        <h3>EP II: CYRIL LOREI</h3>
+                        <p>Cyril, another Computer Engineering student at FEU Tech narrates his experience on being stereotyped for liking feminine hobbies such as dancing.</p>
+                    </div>
+                </article>
+
+                <article class="episode-item">
+                    <div class="thumb-placeholder episode-thumb">[podcast thumbnail placeholder]</div>
+                    <div class="episode-copy">
+                        <h3>EP III: MANDRAKE</h3>
+                        <p>A tribute to our Gender and Society professor who actively advocates awareness and support to gender equality. This episode showcases the importance of influence in creating positive change.</p>
+                    </div>
+                </article>
+            </section>
+        </main>
+
+        <footer>
+            © PROJECT EXSITE. ALL RIGHTS RESERVED.
+        </footer>
+    </div>
+
+    <script>
+        const searchForm = document.querySelector('.search-form');
+        const searchInput = document.getElementById('site-search');
+        const joinButton = document.querySelector('.join-btn');
+        const aboutButton = document.querySelector('.tab-about');
+        const dotsButton = document.querySelector('.dots');
+        const dotsDropdown = document.querySelector('.dots-dropdown');
+        const frameworkButton = Array.from(document.querySelectorAll('.tabs button')).find(b => /frame/i.test(b.textContent));
+        const searchableNodes = Array.from(document.querySelectorAll(
+            'main h1, main h2, main h3, main p, main button, main a, footer'
+        ));
+
+        let activeSearchHit = null;
+
+        const clearSearchHit = () => {
+            if (!activeSearchHit) {
+                return;
+            }
+
+            activeSearchHit.classList.remove('search-hit');
+            activeSearchHit = null;
+        };
+
+        searchForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+
+            const term = searchInput.value.trim().toLowerCase();
+            clearSearchHit();
+
+            if (!term) {
+                return;
+            }
+
+            const match = searchableNodes.find((node) =>
+                node.textContent.toLowerCase().includes(term)
+            );
+
+            if (!match) {
+                searchInput.value = '';
+                searchInput.placeholder = 'No results found';
+                window.setTimeout(() => {
+                    searchInput.placeholder = 'Search this site';
+                }, 1300);
+                return;
+            }
+
+            activeSearchHit = match;
+            activeSearchHit.classList.add('search-hit');
+            activeSearchHit.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        });
+
+        joinButton.addEventListener('click', () => {
+            window.location.href = 'gedsoc.html#socials';
+        });
+
+        aboutButton.addEventListener('click', () => {
+            window.location.href = 'gedsoc.html';
+        });
+
+        if (frameworkButton) {
+            frameworkButton.addEventListener('click', () => {
+                window.location.href = 'framework.html';
+            });
+        }
+
+        dotsButton.addEventListener('click', () => {
+            const isHidden = dotsDropdown.hidden;
+            dotsDropdown.hidden = !isHidden;
+            dotsButton.setAttribute('aria-expanded', String(isHidden));
+        });
+
+        document.addEventListener('click', (event) => {
+            if (!event.target.closest('.dots-menu')) {
+                dotsDropdown.hidden = true;
+                dotsButton.setAttribute('aria-expanded', 'false');
+            }
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                dotsDropdown.hidden = true;
+                dotsButton.setAttribute('aria-expanded', 'false');
+            }
+        });
+
+        // ── Shared zoom ──────────────────────────────────────────
+        (function () {
+            const STEP = 0.1, MIN = 0.5, MAX = 1.5;
+            const zoomIn    = document.getElementById('zoomIn');
+            const zoomOut   = document.getElementById('zoomOut');
+            const zoomLabel = document.getElementById('zoomLabel');
+            let zoom = parseFloat(localStorage.getItem('fw_zoom') || '1');
+            function applyZoom(z) {
+                zoom = Math.min(MAX, Math.max(MIN, parseFloat(z.toFixed(1))));
+                document.documentElement.style.zoom = zoom;
+                localStorage.setItem('fw_zoom', zoom);
+                if (zoomLabel) zoomLabel.textContent = Math.round(zoom * 100) + '%';
+            }
+            applyZoom(zoom);
+            if (zoomIn)  zoomIn.addEventListener('click',  (e) => { e.stopPropagation(); applyZoom(zoom + STEP); });
+            if (zoomOut) zoomOut.addEventListener('click', (e) => { e.stopPropagation(); applyZoom(zoom - STEP); });
+        })();
+
+        // Profile upload: trigger hidden file input when Create New ME is clicked
+        const createMeBtn = document.getElementById('create-me-btn');
+        const profileUpload = document.getElementById('profile-upload');
+        const profileThumb = document.querySelector('.profile-thumb');
+        const usernameEl = document.querySelector('.username');
+
+        // Shared helper: render a saved base64 image into a thumb element
+        function applyProfilePhoto(thumb, src) {
+            thumb.innerHTML = '';
+            const img = document.createElement('img');
+            img.alt = 'Profile avatar';
+            img.src = src;
+            img.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;border-radius:inherit';
+            thumb.appendChild(img);
+        }
+
+        // Restore saved profile photo & username on load
+        (function () {
+            const savedPhoto = localStorage.getItem('fw_profile');
+            if (savedPhoto && profileThumb) applyProfilePhoto(profileThumb, savedPhoto);
+            const savedName = localStorage.getItem('fw_username');
+            if (savedName && usernameEl) usernameEl.textContent = savedName;
+        })();
+
+        // Sync editable username back to localStorage on blur
+        if (usernameEl) {
+            usernameEl.addEventListener('blur', () => {
+                const val = usernameEl.textContent.trim();
+                if (val && val.toLowerCase() !== 'username') localStorage.setItem('fw_username', val);
+            });
+        }
+
+        if (profileUpload && profileThumb) {
+            profileUpload.addEventListener('change', (e) => {
+                const file = e.target.files && e.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = () => {
+                    applyProfilePhoto(profileThumb, reader.result);
+                    localStorage.setItem('fw_profile', reader.result);
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // Add Story / Post buttons: temporary no-op message
+        const addStoryBtn = document.getElementById('add-story-btn');
+        const postBtn = document.getElementById('post-btn');
+
+        const noFunc = () => alert("No function yet — we're working on it.");
+        if (addStoryBtn) addStoryBtn.addEventListener('click', noFunc);
+        if (postBtn) postBtn.addEventListener('click', noFunc);
+    </script>
+
+    <!-- Build Me Modal -->
+    <div id="buildMeModal" class="build-me-modal" hidden>
+        <div class="build-me-content">
+            <div class="build-me-left">
+                <button class="bm-left-btn" data-panel="hair">Hair</button>
+                <button class="bm-left-btn" data-panel="face">Face</button>
+                <button class="bm-left-btn bm-active" data-panel="outfit">Outfit</button>
+                <button class="bm-left-btn" data-panel="addon">Add-ons</button>
+                <div style="flex:1"></div>
+                <button class="bm-left-btn bm-draw-btn" data-panel="draw">Draw Your<br>Own ME</button>
+                <button class="bm-left-btn bm-save-btn" id="buildMeSave">Save</button>
+            </div>
+            <div class="build-me-center">
+                <button class="build-me-close" id="buildMeClose">✕</button>
+                <div id="bmCanvasWrap" class="bm-canvas-wrap">
+                    <canvas id="bmCanvas" width="220" height="400"></canvas>
+                </div>
+                <div id="bmDrawToolbar" class="bm-draw-toolbar" hidden>
+                    <label class="bm-draw-label">Color <input type="color" id="bmDrawColor" value="#e74c3c"></label>
+                    <label class="bm-draw-label">Size <input type="range" id="bmDrawSize" min="2" max="20" value="5" style="width:56px"></label>
+                    <button id="bmClearDraw" class="bm-opt-btn">Clear</button>
+                    <button id="bmExitDraw" class="bm-opt-btn">← Back</button>
+                </div>
+                <div class="bm-options-row" id="bmOptionsPanel"></div>
+            </div>
+            <div class="build-me-right" id="bmPresetsPanel"></div>
+        </div>
+    </div>
+    <script src="avatar-builder.js"></script>
+</body>
+</html>

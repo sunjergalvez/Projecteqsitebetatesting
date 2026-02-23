@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Next Gen - FraMEwork</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="page advocally-page framework-page">
+        <header class="top-nav">
+            <button class="avatar" aria-label="Profile">
+                <img src="Logo.png" alt="GEDSOC logo" class="avatar-logo">
+            </button>
+            <form class="search-pill search-form" role="search" aria-label="Search this site">
+                <input id="site-search" class="search-input" type="search" placeholder="Search this site" aria-label="Search this site">
+                <button class="search-submit" type="submit">Search</button>
+            </form>
+            <button class="join-btn" type="button">JOIN US!</button>
+            <div class="dots-menu">
+                <button class="dots" type="button" aria-label="Open menu" aria-haspopup="true" aria-expanded="false">•••</button>
+                <div class="dots-dropdown" hidden>
+                    <a class="report-problem-btn" href="#" target="_blank" rel="noopener noreferrer">Report a problem</a>
+                    <div class="zoom-control">
+                        <button class="zoom-btn" id="zoomOut" aria-label="Zoom out">−</button>
+                        <span class="zoom-level" id="zoomLabel">100%</span>
+                        <button class="zoom-btn" id="zoomIn" aria-label="Zoom in">+</button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <section class="adv-hero">
+                <div class="profile-col">
+                    <div class="thumb-placeholder profile-thumb">[profile placeholder]</div>
+                    <input id="profile-upload" type="file" accept="image/*" hidden>
+                    <p class="username" contenteditable="true" role="textbox" aria-label="Edit username">username</p>
+                </div>
+
+                <div class="action-col">
+                    <button id="create-me-btn" type="button" class="adv-action-btn">Create New ME</button>
+                    <button id="add-story-btn" type="button" class="adv-action-btn">Add Story</button>
+                    <button id="post-btn" type="button" class="adv-action-btn">Post</button>
+                </div>
+
+                <div class="feature-col">
+                    <video class="feature-thumb" src="3.mp4" autoplay muted loop playsinline aria-label="Feature episode preview"></video>
+                    <h2 class="feature-title">NEW EPISODE OUT! &nbsp; EP 0: ROLE MODEL</h2>
+                </div>
+            </section>
+            <!-- feed area -->
+
+            <nav class="tabs" aria-label="Main tabs">
+                <button type="button">AdVocally</button>
+                <button type="button" class="tab-about">ABOUT US</button>
+                <button type="button" class="active">FraMEwork</button>
+            </nav>
+
+            <section class="framework-feed-cols" aria-label="Feed">
+                <div class="feed-col">
+                    <div class="feed-col-header">📖 Stories</div>
+                    <div class="story-strip" aria-label="Stories">
+                        <!-- stories will appear here -->
+                    </div>
+                </div>
+                <div class="feed-col">
+                    <div class="feed-col-header">📝 Posts</div>
+                    <div id="posts" class="posts">
+                        <article class="episode-item post-item">
+                            <div class="episode-thumb thumb-placeholder">[memory thumbnail]</div>
+                            <div class="episode-copy">
+                                <h3>Welcome to FraMEwork</h3>
+                                <p>This is your social space — post memories, add stories, like and comment.</p>
+                                <div class="post-actions">
+                                    <button class="small-btn like-btn">Like <span class="like-count">0</span></button>
+                                    <button class="small-btn comment-btn">Comment</button>
+                                </div>
+                                <div class="comments"></div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            © PROJECT EXSITE. ALL RIGHTS RESERVED.
+        </footer>
+    </div>
+
+    <!-- Post Modal -->
+    <div id="postModal" class="modal" hidden>
+        <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="postModalTitle">
+            <div class="modal-header">
+                <h3 id="postModalTitle">Create Post</h3>
+                <button class="modal-close" aria-label="Close post dialog">×</button>
+            </div>
+            <form id="postForm" class="modal-form">
+                <div class="form-group">
+                    <label for="postTitle">Title</label>
+                    <input id="postTitle" type="text" placeholder="Enter a title..." maxlength="80">
+                </div>
+                <div class="form-group">
+                    <label for="postCaption">Caption</label>
+                    <textarea id="postCaption" rows="4" placeholder="Write a caption..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="postMedia">Photo or video <span class="form-hint">(optional)</span></label>
+                    <input id="postMedia" type="file" accept="image/*,video/*">
+                </div>
+                <div id="postPreview" class="media-preview" aria-hidden="true"></div>
+                <div class="modal-actions">
+                    <button type="submit" class="small-btn btn-primary">Publish</button>
+                    <button type="button" class="small-btn modal-cancel">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="storyModal" class="modal" hidden>
+        <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="storyModalTitle">
+            <div class="modal-header">
+                <h3 id="storyModalTitle">Add Story</h3>
+                <button class="modal-close" aria-label="Close story dialog">×</button>
+            </div>
+            <form id="storyForm" class="modal-form">
+                <div class="form-group">
+                    <label for="storyTitle">Title <span class="form-hint">(optional)</span></label>
+                    <input id="storyTitle" type="text" placeholder="Enter a title..." maxlength="80">
+                </div>
+                <div class="form-group">
+                    <label for="storyMedia">Photo or video</label>
+                    <input id="storyMedia" type="file" accept="image/*,video/*" required>
+                </div>
+                <div id="storyPreview" class="media-preview" aria-hidden="true"></div>
+                <div class="modal-actions">
+                    <button type="submit" class="small-btn btn-primary">Add Story</button>
+                    <button type="button" class="small-btn modal-cancel">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Username Modal -->
+    <div id="usernameModal" class="modal" hidden>
+        <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="usernameModalTitle" style="max-width:400px">
+            <div class="modal-header">
+                <h3 id="usernameModalTitle">Set Your Username</h3>
+            </div>
+            <p class="username-modal-hint">Choose a name to show on your posts and stories.</p>
+            <form id="usernameForm" class="modal-form">
+                <div class="form-group">
+                    <label for="usernameInput">Username</label>
+                    <input id="usernameInput" type="text" placeholder="e.g. alex123" maxlength="40" required autocomplete="off">
+                </div>
+                <div class="modal-actions">
+                    <button type="submit" class="small-btn btn-primary">Save &amp; Continue</button>
+                    <button type="button" class="small-btn modal-cancel">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Lightbox Modal -->
+    <div id="mediaLightbox" class="modal lightbox-modal" hidden style="display:none;">
+        <div class="lightbox-inner">
+            <button id="lightboxClose" class="modal-close lightbox-close" aria-label="Close media preview">×</button>
+            <div id="mediaLightboxContent"></div>
+        </div>
+    </div>
+
+    <script>
+        const searchForm = document.querySelector('.search-form');
+        const searchInput = document.getElementById('site-search');
+
+        // ── Shared zoom ──────────────────────────────────────────
+        (function () {
+            const STEP = 0.1, MIN = 0.5, MAX = 1.5;
+            const zoomIn    = document.getElementById('zoomIn');
+            const zoomOut   = document.getElementById('zoomOut');
+            const zoomLabel = document.getElementById('zoomLabel');
+            const page      = document.querySelector('.page');
+            let zoom = parseFloat(localStorage.getItem('fw_zoom') || '1');
+
+            function applyZoom(z) {
+                zoom = Math.min(MAX, Math.max(MIN, z));
+                document.documentElement.style.setProperty('--zoom', zoom);
+
+                // Zoom ONLY the .page — never body, never lightbox
+                if (page) {
+                    page.style.zoom = zoom;
+                }
+
+                // Reset body completely
+                document.body.style.zoom      = '';
+                document.body.style.transform = '';
+
+                if (zoomLabel) zoomLabel.textContent = Math.round(zoom * 100) + '%';
+                localStorage.setItem('fw_zoom', zoom);
+            }
+
+            window.addEventListener('resize', () => applyZoom(zoom));
+            applyZoom(zoom);
+            if (zoomIn)  zoomIn.addEventListener('click',  (e) => { e.stopPropagation(); applyZoom(zoom + STEP); });
+            if (zoomOut) zoomOut.addEventListener('click', (e) => { e.stopPropagation(); applyZoom(zoom - STEP); });
+        })();
+        const joinButton = document.querySelector('.join-btn');
+        const aboutButton = document.querySelector('.tab-about');
+        const advocalllyButton = document.querySelector('.tabs button:first-child');
+        const dotsButton = document.querySelector('.dots');
+        const dotsDropdown = document.querySelector('.dots-dropdown');
+
+        const postsContainer = document.getElementById('posts');
+        const addStoryBtn = document.getElementById('add-story-btn');
+        const postBtn = document.getElementById('post-btn');
+
+        const searchableNodes = Array.from(document.querySelectorAll(
+            'main h1, main h2, main h3, main p, main button, main a, footer'
+        ));
+
+        let activeSearchHit = null;
+
+        const clearSearchHit = () => {
+            if (!activeSearchHit) return;
+            activeSearchHit.classList.remove('search-hit');
+            activeSearchHit = null;
+        };
+
+        searchForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const term = searchInput.value.trim().toLowerCase();
+            clearSearchHit();
+            if (!term) return;
+            const match = searchableNodes.find((node) => node.textContent.toLowerCase().includes(term));
+            if (!match) {
+                searchInput.value = '';
+                searchInput.placeholder = 'No results found';
+                window.setTimeout(() => searchInput.placeholder = 'Search this site', 1300);
+                return;
+            }
+            activeSearchHit = match;
+            activeSearchHit.classList.add('search-hit');
+            activeSearchHit.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        });
+
+        joinButton.addEventListener('click', () => {
+            window.location.href = 'gedsoc.html#socials';
+        });
+
+        aboutButton.addEventListener('click', () => {
+            window.location.href = 'gedsoc.html';
+        });
+
+        if (advocalllyButton) advocalllyButton.addEventListener('click', () => {
+            window.location.href = 'advocally.html';
+        });
+
+        dotsButton.addEventListener('click', () => {
+            const isHidden = dotsDropdown.hidden;
+            dotsDropdown.hidden = !isHidden;
+            dotsButton.setAttribute('aria-expanded', String(isHidden));
+        });
+
+        document.addEventListener('click', (event) => {
+            if (!event.target.closest('.dots-menu')) {
+                dotsDropdown.hidden = true;
+                dotsButton.setAttribute('aria-expanded', 'false');
+            }
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                dotsDropdown.hidden = true;
+                dotsButton.setAttribute('aria-expanded', 'false');
+            }
+        });
+
+        // Profile upload reuse
+        const createMeBtn = document.getElementById('create-me-btn');
+        const profileUpload = document.getElementById('profile-upload');
+        const profileThumb = document.querySelector('.profile-thumb');
+
+        // Shared helper: render a saved base64 image into a thumb element
+        function applyProfilePhoto(thumb, src) {
+            thumb.innerHTML = '';
+            const img = document.createElement('img');
+            img.alt = 'Profile avatar';
+            img.src = src;
+            img.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;border-radius:inherit';
+            thumb.appendChild(img);
+        }
+
+        // Restore saved profile photo on load
+        (function () {
+            const saved = localStorage.getItem('fw_profile');
+            if (saved && profileThumb) applyProfilePhoto(profileThumb, saved);
+        })();
+
+        if (profileUpload && profileThumb) {
+            profileUpload.addEventListener('change', (e) => {
+                const file = e.target.files && e.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = () => {
+                    applyProfilePhoto(profileThumb, reader.result);
+                    localStorage.setItem('fw_profile', reader.result);
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // Modal elements
+        const postModal = document.getElementById('postModal');
+        const storyModal = document.getElementById('storyModal');
+        const postForm = document.getElementById('postForm');
+        const storyForm = document.getElementById('storyForm');
+        const postPreview = document.getElementById('postPreview');
+        const storyPreview = document.getElementById('storyPreview');
+        const postMediaInput = document.getElementById('postMedia');
+        const storyMediaInput = document.getElementById('storyMedia');
+
+        const storyStrip = document.querySelector('.story-strip');
+
+        // helpers
+        function openModal(modal) {
+            modal.hidden = false;
+            modal.style.display = 'flex';
+            // blur the page container while modal is open
+            document.body.classList.add('modal-open');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeModal(modal) {
+            modal.hidden = true;
+            modal.style.display = 'none';
+            document.body.classList.remove('modal-open');
+            document.body.style.overflow = '';
+        }
+
+        // ── Username setup ─────────────────────────────────────────────
+        const usernameModal   = document.getElementById('usernameModal');
+        const usernameForm    = document.getElementById('usernameForm');
+        const usernameInputEl = document.getElementById('usernameInput');
+        const usernameEl      = document.querySelector('.username');
+        let _pendingAction    = null;
+
+        function getUsername() {
+            const s = localStorage.getItem('fw_username');
+            return (s && s.trim() && s.trim().toLowerCase() !== 'username') ? s.trim() : '';
+        }
+        function setUsername(name) {
+            localStorage.setItem('fw_username', name);
+            if (usernameEl) usernameEl.textContent = name;
+        }
+        function requireUsername(cb) {
+            const name = getUsername();
+            if (name) { cb(name); return; }
+            _pendingAction = cb;
+            if (usernameInputEl) usernameInputEl.value = '';
+            openModal(usernameModal);
+        }
+
+        // Restore saved username on load
+        (function () {
+            const stored = getUsername();
+            if (stored && usernameEl) usernameEl.textContent = stored;
+        })();
+
+        // Sync contenteditable username back to localStorage on blur
+        if (usernameEl) {
+            usernameEl.addEventListener('blur', () => {
+                const val = usernameEl.textContent.trim();
+                if (val && val.toLowerCase() !== 'username') localStorage.setItem('fw_username', val);
+            });
+        }
+
+        // Username form submit
+        if (usernameForm) {
+            usernameForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const val = usernameInputEl ? usernameInputEl.value.trim() : '';
+                if (!val) return;
+                setUsername(val);
+                closeModal(usernameModal);
+                if (_pendingAction) { const cb = _pendingAction; _pendingAction = null; cb(val); }
+            });
+        }
+
+        // attach openers — gated behind username
+        if (addStoryBtn) addStoryBtn.addEventListener('click', () => requireUsername(() => openModal(storyModal)));
+        if (postBtn) postBtn.addEventListener('click', () => requireUsername(() => openModal(postModal)));
+
+        // modal close buttons and cancel
+        Array.from(document.querySelectorAll('.modal-close')).forEach(b => b.addEventListener('click', (e) => {
+            const modal = e.target.closest('.modal');
+            closeModal(modal);
+        }));
+        Array.from(document.querySelectorAll('.modal-cancel')).forEach(b => b.addEventListener('click', (e) => {
+            const modal = e.target.closest('.modal');
+            closeModal(modal);
+        }));
+
+        // preview helper
+        function renderPreview(container, file) {
+            container.innerHTML = '';
+            if (!file) return;
+            const type = file.type || '';
+            const reader = new FileReader();
+            reader.onload = () => {
+                if (type.startsWith('video')) {
+                    const v = document.createElement('video');
+                    v.src = reader.result;
+                    v.controls = true;
+                    v.style.maxWidth = '100%';
+                    v.style.height = 'auto';
+                    container.appendChild(v);
+                } else {
+                    const img = document.createElement('img');
+                    img.src = reader.result;
+                    img.alt = '';
+                    img.style.maxWidth = '100%';
+                    img.style.height = 'auto';
+                    container.appendChild(img);
+                }
+                container.setAttribute('aria-hidden', 'false');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        postMediaInput && postMediaInput.addEventListener('change', (e) => {
+            const f = e.target.files && e.target.files[0];
+            renderPreview(postPreview, f);
+        });
+        storyMediaInput && storyMediaInput.addEventListener('change', (e) => {
+            const f = e.target.files && e.target.files[0];
+            renderPreview(storyPreview, f);
+        });
+
+        // create story entry (smaller card, only likes)
+        storyForm && storyForm.addEventListener('submit', (ev) => {
+            ev.preventDefault();
+            const file = storyMediaInput.files && storyMediaInput.files[0];
+            const title = document.getElementById('storyTitle').value.trim();
+            if (!file) return alert('Please choose a photo or video for your story.');
+            const story = document.createElement('div');
+            story.className = 'story-item';
+
+            // media inside story
+            const mediaWrapper = document.createElement('div');
+            mediaWrapper.className = 'media-wrapper';
+            const reader = new FileReader();
+            reader.onload = () => {
+                const type = file.type || '';
+                if (type.startsWith('video')) {
+                    const v = document.createElement('video');
+                    v.src = reader.result;
+                    v.autoplay = true;
+                    v.muted = true;
+                    v.loop = true;
+                    v.playsInline = true;
+                    mediaWrapper.appendChild(v);
+                } else {
+                    const img = document.createElement('img');
+                    img.src = reader.result;
+                    mediaWrapper.appendChild(img);
+                }
+                // Always clear and append mediaWrapper first
+                story.innerHTML = '';
+                story.appendChild(mediaWrapper);
+                if (title) {
+                    const titleEl = document.createElement('div');
+                    titleEl.className = 'story-title';
+                    titleEl.textContent = title;
+                    story.appendChild(titleEl);
+                }
+
+                // byline
+                const storyByline = document.createElement('div');
+                storyByline.className = 'post-byline';
+                storyByline.textContent = 'Story by ' + (getUsername() || 'anonymous');
+                story.appendChild(storyByline);
+
+                // like btn for story
+                const like = document.createElement('button');
+                like.className = 'small-btn like-btn';
+                like.innerHTML = '❤ <span class="like-count">0</span>';
+                like.addEventListener('click', () => {
+                    const c = like.querySelector('.like-count');
+                    let n = parseInt(c.textContent, 10) || 0;
+                    c.textContent = String(n + 1);
+                });
+                story.appendChild(like);
+
+                storyStrip.insertBefore(story, storyStrip.firstChild);
+                storyForm.reset();
+                storyPreview.innerHTML = '';
+                closeModal(storyModal);
+            };
+            reader.readAsDataURL(file);
+        });
+
+        // create post (caption + optional media, like + comment)
+        postForm && postForm.addEventListener('submit', (ev) => {
+            ev.preventDefault();
+            const title = document.getElementById('postTitle').value.trim();
+            const caption = document.getElementById('postCaption').value.trim();
+            const file = postMediaInput.files && postMediaInput.files[0];
+
+            const article = document.createElement('article');
+            article.className = 'episode-item post-item';
+
+            const thumb = document.createElement('div');
+            thumb.className = 'episode-thumb thumb-placeholder';
+
+            const copy = document.createElement('div');
+            copy.className = 'episode-copy';
+
+            if (title) {
+                const h3 = document.createElement('h3');
+                h3.textContent = title;
+                copy.appendChild(h3);
+            }
+
+            const postByline = document.createElement('div');
+            postByline.className = 'post-byline';
+            postByline.textContent = 'Post by ' + (getUsername() || 'anonymous');
+            copy.appendChild(postByline);
+
+            const p = document.createElement('p');
+            p.textContent = caption || '';
+
+            const actions = document.createElement('div');
+            actions.className = 'post-actions';
+
+            const likeBtn = document.createElement('button');
+            likeBtn.className = 'small-btn like-btn';
+            likeBtn.innerHTML = 'Like <span class="like-count">0</span>';
+            likeBtn.addEventListener('click', () => {
+                const countEl = likeBtn.querySelector('.like-count');
+                let count = parseInt(countEl.textContent, 10) || 0;
+                count += 1;
+                countEl.textContent = String(count);
+            });
+
+            const commentBtn = document.createElement('button');
+            commentBtn.className = 'small-btn comment-btn';
+            commentBtn.textContent = 'Comment';
+
+            const commentsWrap = document.createElement('div');
+            commentsWrap.className = 'comments';
+
+            // toggle comment input
+            commentBtn.addEventListener('click', () => {
+                if (copy.querySelector('.comment-input')) return;
+                const wrap = document.createElement('div');
+                wrap.className = 'comment-input';
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.placeholder = 'Write a comment...';
+                const submit = document.createElement('button');
+                submit.className = 'small-btn';
+                submit.textContent = 'Send';
+                submit.addEventListener('click', () => {
+                    const val = input.value.trim();
+                    if (!val) return;
+                    const c = document.createElement('div');
+                    c.className = 'comment-item';
+                    const name = getUsername() || 'anonymous';
+                    const nameSpan = document.createElement('span');
+                    nameSpan.className = 'comment-author';
+                    nameSpan.textContent = name + ': ';
+                    c.appendChild(nameSpan);
+                    c.appendChild(document.createTextNode(val));
+                    commentsWrap.appendChild(c);
+                    input.value = '';
+                });
+                wrap.appendChild(input);
+                wrap.appendChild(submit);
+                copy.appendChild(wrap);
+            });
+
+            actions.appendChild(likeBtn);
+            actions.appendChild(commentBtn);
+
+            copy.appendChild(p);
+            copy.appendChild(actions);
+            copy.appendChild(commentsWrap);
+
+            article.appendChild(thumb);
+            article.appendChild(copy);
+
+            // if media provided, render into thumb
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = () => {
+                    const mediaWrapper = document.createElement('div');
+                    mediaWrapper.className = 'media-wrapper';
+                    if ((file.type || '').startsWith('video')) {
+                        const v = document.createElement('video');
+                        v.src = reader.result;
+                        v.controls = true;
+                        mediaWrapper.appendChild(v);
+                    } else {
+                        const img = document.createElement('img');
+                        img.src = reader.result;
+                        mediaWrapper.appendChild(img);
+                    }
+                    thumb.className = 'episode-thumb'; // remove thumb-placeholder
+                    thumb.innerHTML = '';
+                    thumb.appendChild(mediaWrapper);
+                    postsContainer.insertBefore(article, postsContainer.firstChild);
+                };
+                reader.readAsDataURL(file);
+            } else {
+                postsContainer.insertBefore(article, postsContainer.firstChild);
+            }
+
+            postForm.reset();
+            postPreview.innerHTML = '';
+            closeModal(postModal);
+        });
+
+        // Lightbox
+        const mediaLightbox = document.getElementById('mediaLightbox');
+        const mediaLightboxContent = document.getElementById('mediaLightboxContent');
+
+        function openMediaLightbox(mediaEl) {
+            mediaLightboxContent.innerHTML = '';
+            let clone;
+            if (mediaEl.tagName === 'IMG') {
+                clone = document.createElement('img');
+                clone.src = mediaEl.src;
+                clone.alt = '';
+            } else if (mediaEl.tagName === 'VIDEO') {
+                clone = document.createElement('video');
+                clone.src = mediaEl.src;
+                clone.controls = true;
+                clone.autoplay = true;
+            }
+            if (clone) mediaLightboxContent.appendChild(clone);
+            mediaLightbox.hidden = false;
+            mediaLightbox.style.display = 'flex';
+            document.body.classList.add('modal-open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMediaLightbox() {
+            mediaLightbox.hidden = true;
+            mediaLightbox.style.display = 'none';
+            document.body.classList.remove('modal-open');
+            document.body.style.overflow = '';
+        }
+
+        document.getElementById('lightboxClose').addEventListener('click', closeMediaLightbox);
+        mediaLightbox.addEventListener('click', (e) => {
+            if (e.target === mediaLightbox) closeMediaLightbox();
+        });
+
+        // Click on any media in .media-wrapper opens lightbox
+        document.body.addEventListener('click', function(e) {
+            const media = e.target;
+            if ((media.tagName === 'IMG' || media.tagName === 'VIDEO') && media.closest('.media-wrapper')) {
+                openMediaLightbox(media);
+            }
+        });
+    </script>
+
+    <!-- Build Me Modal -->
+    <div id="buildMeModal" class="build-me-modal" hidden>
+        <div class="build-me-content">
+            <div class="build-me-left">
+                <button class="bm-left-btn" data-panel="hair">Hair</button>
+                <button class="bm-left-btn" data-panel="face">Face</button>
+                <button class="bm-left-btn bm-active" data-panel="outfit">Outfit</button>
+                <button class="bm-left-btn" data-panel="addon">Add-ons</button>
+                <div style="flex:1"></div>
+                <button class="bm-left-btn bm-draw-btn" data-panel="draw">Draw Your<br>Own ME</button>
+                <button class="bm-left-btn bm-save-btn" id="buildMeSave">Save</button>
+            </div>
+            <div class="build-me-center">
+                <button class="build-me-close" id="buildMeClose">✕</button>
+                <div id="bmCanvasWrap" class="bm-canvas-wrap">
+                    <canvas id="bmCanvas" width="220" height="400"></canvas>
+                </div>
+                <div id="bmDrawToolbar" class="bm-draw-toolbar" hidden>
+                    <label class="bm-draw-label">Color <input type="color" id="bmDrawColor" value="#e74c3c"></label>
+                    <label class="bm-draw-label">Size <input type="range" id="bmDrawSize" min="2" max="20" value="5" style="width:56px"></label>
+                    <button id="bmClearDraw" class="bm-opt-btn">Clear</button>
+                    <button id="bmExitDraw" class="bm-opt-btn">← Back</button>
+                </div>
+                <div class="bm-options-row" id="bmOptionsPanel"></div>
+            </div>
+            <div class="build-me-right" id="bmPresetsPanel"></div>
+        </div>
+    </div>
+    <script src="avatar-builder.js"></script>
+</body>
+</html>

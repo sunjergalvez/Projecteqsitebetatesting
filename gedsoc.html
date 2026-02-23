@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Next Gen - About Us</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="page">
+        <header class="top-nav">
+            <button class="avatar" aria-label="Profile">
+                <img src="Logo.png" alt="GEDSOC logo" class="avatar-logo">
+            </button>
+            <form class="search-pill search-form" role="search" aria-label="Search this site">
+                <input id="site-search" class="search-input" type="search" placeholder="Search this site" aria-label="Search this site">
+                <button class="search-submit" type="submit">Search</button>
+            </form>
+            <button class="join-btn" type="button">JOIN US!</button>
+            <div class="dots-menu">
+                <button class="dots" type="button" aria-label="Open menu" aria-haspopup="true" aria-expanded="false">•••</button>
+                <div class="dots-dropdown" hidden>
+                    <a
+                        class="report-problem-btn"
+                        href="https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >Report a problem</a>
+                    <div class="zoom-control">
+                        <button class="zoom-btn" id="zoomOut" aria-label="Zoom out">−</button>
+                        <span class="zoom-level" id="zoomLabel">100%</span>
+                        <button class="zoom-btn" id="zoomIn" aria-label="Zoom in">+</button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <section class="hero">
+                <div class="emblem">
+                    <div class="logo-wrap">
+                        <img src="Logo.png" alt="GEDSOC logo" class="logo-img">
+                        <img src="Logo.png" alt="" class="logo-shine" aria-hidden="true">
+                    </div>
+                </div>
+            </section>
+
+            <nav class="tabs" aria-label="Main tabs">
+                <button type="button" class="tab-advocally">AdVocally</button>
+                <button type="button" class="active">ABOUT US</button>
+                <button type="button">FraMEwork</button>
+            </nav>
+
+            <section class="about">
+                <h2>About Us</h2>
+                <p>
+                    We are a youth-led initiative focused on gender empowerment, safe spaces,
+                    and community support. Our projects amplify voices, build awareness, and
+                    connect people through education, advocacy, and collaboration.
+                </p>
+            </section>
+
+            <section class="socials" id="socials" aria-label="Social links">
+                <a href="#" aria-label="Facebook"><img src="FB LOGO.png" alt="Facebook" class="social-logo"></a>
+                <a href="#" aria-label="Instagram"><img src="IG LOGO.png" alt="Instagram" class="social-logo"></a>
+                <a href="#" aria-label="YouTube"><img src="YT LOGO.png" alt="YouTube" class="social-logo"></a>
+                <a href="#" aria-label="TikTok"><img src="TIKTOK LOGO.png" alt="TikTok" class="social-logo"></a>
+            </section>
+        </main>
+
+        <footer>
+            © PROJECT EXSITE. ALL RIGHTS RESERVED.
+        </footer>
+    </div>
+
+    <script>
+        const searchForm = document.querySelector('.search-form');
+        const searchInput = document.getElementById('site-search');
+        const joinButton = document.querySelector('.join-btn');
+
+        // ── Shared zoom ──────────────────────────────────────────
+        (function () {
+            const STEP = 0.1, MIN = 0.5, MAX = 1.5;
+            const zoomIn    = document.getElementById('zoomIn');
+            const zoomOut   = document.getElementById('zoomOut');
+            const zoomLabel = document.getElementById('zoomLabel');
+            let zoom = parseFloat(localStorage.getItem('fw_zoom') || '1');
+            function applyZoom(z) {
+                zoom = Math.min(MAX, Math.max(MIN, parseFloat(z.toFixed(1))));
+                document.documentElement.style.zoom = zoom;
+                localStorage.setItem('fw_zoom', zoom);
+                if (zoomLabel) zoomLabel.textContent = Math.round(zoom * 100) + '%';
+            }
+            applyZoom(zoom);
+            if (zoomIn)  zoomIn.addEventListener('click',  (e) => { e.stopPropagation(); applyZoom(zoom + STEP); });
+            if (zoomOut) zoomOut.addEventListener('click', (e) => { e.stopPropagation(); applyZoom(zoom - STEP); });
+        })();
+        const advocallyButton = document.querySelector('.tab-advocally');
+        const aboutUsButton = document.querySelector('.tabs .active');
+        const socialsSection = document.getElementById('socials');
+        const dotsButton = document.querySelector('.dots');
+        const dotsDropdown = document.querySelector('.dots-dropdown');
+        const frameworkButton = Array.from(document.querySelectorAll('.tabs button')).find(b => /frame/i.test(b.textContent));
+        const searchableNodes = Array.from(document.querySelectorAll(
+            'main h1, main h2, main h3, main p, main button, main a, .side-tag, footer'
+        ));
+
+        let activeSearchHit = null;
+
+        const clearSearchHit = () => {
+            if (!activeSearchHit) {
+                return;
+            }
+
+            activeSearchHit.classList.remove('search-hit');
+            activeSearchHit = null;
+        };
+
+        searchForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+
+            const term = searchInput.value.trim().toLowerCase();
+            clearSearchHit();
+
+            if (!term) {
+                return;
+            }
+
+            const match = searchableNodes.find((node) =>
+                node.textContent.toLowerCase().includes(term)
+            );
+
+            if (!match) {
+                searchInput.value = '';
+                searchInput.placeholder = 'No results found';
+                window.setTimeout(() => {
+                    searchInput.placeholder = 'Search this site';
+                }, 1300);
+                return;
+            }
+
+            activeSearchHit = match;
+            activeSearchHit.classList.add('search-hit');
+            activeSearchHit.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        });
+
+        joinButton.addEventListener('click', () => {
+            socialsSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        });
+
+        if (location.hash === '#socials' && socialsSection) {
+            setTimeout(() => socialsSection.scrollIntoView({ behavior: 'smooth', block: 'center' }), 150);
+        }
+
+        advocallyButton.addEventListener('click', () => {
+            window.location.href = 'advocally.html';
+        });
+
+        aboutUsButton.addEventListener('click', () => {
+            window.location.reload();
+        });
+
+        if (frameworkButton) {
+            frameworkButton.addEventListener('click', () => {
+                window.location.href = 'framework.html';
+            });
+        }
+
+        dotsButton.addEventListener('click', () => {
+            const isHidden = dotsDropdown.hidden;
+            dotsDropdown.hidden = !isHidden;
+            dotsButton.setAttribute('aria-expanded', String(isHidden));
+        });
+
+        document.addEventListener('click', (event) => {
+            if (!event.target.closest('.dots-menu')) {
+                dotsDropdown.hidden = true;
+                dotsButton.setAttribute('aria-expanded', 'false');
+            }
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                dotsDropdown.hidden = true;
+                dotsButton.setAttribute('aria-expanded', 'false');
+            }
+        });
+    </script>
+</body>
+</html>
